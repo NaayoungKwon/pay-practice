@@ -6,5 +6,5 @@ import practice.account.domain.AccountType;
 public interface LoadAccountPort {
 
   Account findAccount(Long userId, AccountType accountType);
-  Account findMainAccountWithTodayTransaction(Long userId);
+  Account findMainAccountWithTodayWithdraw(Long userId);
 }

@@ -42,11 +42,11 @@ public class AccountService implements CreateAccountUseCase, TransactionUseCase 
   @Override
   @Transactional
   public void depositToSavingAccount(Long userId, BigDecimal amount) {
-    Account mainAccount = loadAccountPort.findMainAccountWithTodayTransaction(userId);
-    if(!(mainAccount.canWithdraw(amount) || mainAccount.canWithdrawToExternalAccount())) {
-      return;
-    } else if (!mainAccount.canWithdraw(amount)) {
-      BigDecimal externalBankMoney = externalBankPort.getBalance(userId, amount); // 다른건 롤백한다 쳐도 얘는 우째
+    Account mainAccount = loadAccountPort.findMainAccountWithTodayWithdraw(userId);
+    if(!mainAccount.canWithdrawNow(amount) && !mainAccount.canWithdrawToExternalAccount()) {
+      return ;
+    } else if (!mainAccount.canWithdrawNow(amount)) {
+      BigDecimal externalBankMoney = externalBankPort.getBalance(userId, amount);
       mainAccount.deposit(externalBankMoney);
     }
 

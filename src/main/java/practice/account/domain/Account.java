@@ -1,6 +1,7 @@
 package practice.account.domain;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,21 +19,23 @@ public class Account {
   BigDecimal balance;
 
   private static final BigDecimal DAILY_WITHDRAWAL_LIMIT = BigDecimal.valueOf(3_000_000);
-  BigDecimal todayWithdrawal;
-  TransactionHistoryList transactionHistoryList;
+  BigDecimal todayWithdraw;
 
-  public boolean canWithdraw(BigDecimal amount) {
+  @Builder.Default
+  TransactionHistoryList transactionHistoryList = new TransactionHistoryList(new ArrayList<>());
+
+  public boolean canWithdrawNow(BigDecimal amount) {
     return AccountType.MAIN.equals(type)
         && balance.compareTo(amount) >= 0;
   }
 
   public boolean canWithdrawToExternalAccount() {
     return AccountType.MAIN.equals(type)
-        && todayWithdrawal.compareTo(DAILY_WITHDRAWAL_LIMIT) < 0;
+        && todayWithdraw.compareTo(DAILY_WITHDRAWAL_LIMIT) < 0;
   }
 
   public void withdraw(BigDecimal amount) {
-    if(!canWithdraw(amount)) {
+    if(!canWithdrawNow(amount)) {
       return;
     }
 
