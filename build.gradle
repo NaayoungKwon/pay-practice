@@ -38,7 +38,13 @@ dependencies {
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	//    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly 'com.h2database:h2'
+
+	annotationProcessor("org.mapstruct:mapstruct-processor:1.5.3.Final")
+	testAnnotationProcessor("org.mapstruct:mapstruct-processor:1.5.3.Final")
+	implementation("org.mapstruct:mapstruct:1.5.3.Final")
+	implementation("org.projectlombok:lombok-mapstruct-binding:0.2.0")
 }
 
 tasks.named('test') {
