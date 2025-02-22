@@ -14,6 +14,7 @@ public class Account {
 
   Long accountId;
   Long userId;
+  String accountNumber;
 
   AccountType type;
   BigDecimal balance;
@@ -34,18 +35,23 @@ public class Account {
         && todayWithdraw.compareTo(DAILY_WITHDRAWAL_LIMIT) < 0;
   }
 
-  public void withdraw(BigDecimal amount) {
+  public void withdraw(BigDecimal amount, Account targetAccount) {
     if(!canWithdrawNow(amount)) {
       return;
     }
 
     balance = balance.subtract(amount);
-    transactionHistoryList.add(TransactionType.WITHDRAW, amount);
+    transactionHistoryList.add(TransactionType.WITHDRAW, amount, new AccountInfo(targetAccount));
   }
 
-  public void deposit(BigDecimal amount) {
+  public void deposit(BigDecimal amount, Account sourceAccount) {
     balance = balance.add(amount);
-    transactionHistoryList.add(TransactionType.DEPOSIT, amount);
+    transactionHistoryList.add(TransactionType.DEPOSIT, amount, new AccountInfo(sourceAccount));
+  }
+
+  public void deposit(BigDecimal amount, ExternalAccount sourceAccount) {
+    balance = balance.add(amount);
+    transactionHistoryList.add(TransactionType.DEPOSIT, amount, new AccountInfo(sourceAccount));
   }
 
 

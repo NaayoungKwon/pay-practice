@@ -10,6 +10,7 @@ import practice.account.application.out.LoadAccountPort;
 import practice.account.application.out.RegisterAccountPort;
 import practice.account.domain.Account;
 import practice.account.domain.AccountType;
+import practice.account.domain.ExternalAccount;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +36,9 @@ public class AccountService implements CreateAccountUseCase, TransactionUseCase 
   @Transactional
   public void depositToMainAccount(Long userId, BigDecimal amount) {
     Account account = loadAccountPort.findAccount(userId, AccountType.MAIN);
-    account.deposit(amount);
+    ExternalAccount externalAccount = loadAccountPort.findExternalAccount(userId);
+    externalBankPort.getBalance(externalAccount, amount);
+    account.deposit(amount,  externalAccount);
     updateAccountPort.updateAccount(account);
   }
 
@@ -46,13 +49,17 @@ public class AccountService implements CreateAccountUseCase, TransactionUseCase 
     if(!mainAccount.canWithdrawNow(amount) && !mainAccount.canWithdrawToExternalAccount()) {
       return ;
     } else if (!mainAccount.canWithdrawNow(amount)) {
-      BigDecimal externalBankMoney = externalBankPort.getBalance(userId, amount);
-      mainAccount.deposit(externalBankMoney);
+      ExternalAccount externalAccount = loadAccountPort.findExternalAccount(userId);
+      if(externalAccount == null) {
+        return ;
+      }
+      BigDecimal externalBankMoney = externalBankPort.getBalance(externalAccount, amount);
+      mainAccount.deposit(externalBankMoney, externalAccount);
     }
 
     Account savingAccount = loadAccountPort.findAccount(userId, AccountType.SAVINGS);
-    mainAccount.withdraw(amount);
-    savingAccount.deposit(amount);
+    mainAccount.withdraw(amount, savingAccount);
+    savingAccount.deposit(amount, mainAccount );
     updateAccountPort.updateAccount(List.of(mainAccount, savingAccount));
   }
 }

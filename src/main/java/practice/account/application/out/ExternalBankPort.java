@@ -1,10 +1,9 @@
 package practice.account.application.out;
 
 import java.math.BigDecimal;
-import practice.account.domain.Account;
-import practice.account.domain.AccountType;
+import practice.account.domain.ExternalAccount;
 
 public interface ExternalBankPort {
 
-  BigDecimal getBalance(Long userId, BigDecimal amount);
+  BigDecimal getBalance(ExternalAccount externalAccount, BigDecimal amount);
 }

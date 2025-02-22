@@ -16,6 +16,7 @@ public class TransactionHistory {
   LocalDateTime transactionDateTime;
   TransactionType type;
   BigDecimal amount;
+  String opponentAccount;
 
   public LocalDate getTransactionDate() {
     return transactionDateTime.toLocalDate();

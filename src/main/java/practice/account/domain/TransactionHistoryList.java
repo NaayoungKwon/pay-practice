@@ -19,11 +19,12 @@ public record TransactionHistoryList(List<TransactionHistory> transactionHistory
     return totalWithdrawal.add(money).compareTo(DAILY_WITHDRAWAL_LIMIT) > 0;
   }
 
-  public void add(TransactionType type, BigDecimal amount) {
+  public void add(TransactionType type, BigDecimal amount, AccountInfo accountInfo) {
     transactionHistoryList.add(TransactionHistory.builder()
         .transactionDateTime(LocalDateTime.now())
         .type(type)
         .amount(amount)
+        .opponentAccount(accountInfo.getAccountInfo())
         .build());
   }
 }

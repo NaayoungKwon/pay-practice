@@ -40,6 +40,7 @@ public class TransactionEntity {
   AccountEntity account;
   String transactionType;
   BigDecimal amount;
+  String opponentAccount;
   LocalDate createdDate;
 
   @CreatedDate
