@@ -10,6 +10,7 @@ import practice.account.application.out.LoadAccountPort;
 import practice.account.application.out.RegisterAccountPort;
 import practice.account.domain.Account;
 import practice.account.domain.AccountType;
+import practice.account.domain.ExternalAccount;
 import practice.account.domain.TransactionType;
 import practice.adaptor.out.entity.AccountEntity;
 import practice.adaptor.out.entity.TransactionEntity;
@@ -22,6 +23,7 @@ public class AccountPersistenceAdapter implements LoadAccountPort, RegisterAccou
 
   private final AccountMapper accountMapper;
   private final AccountJpaRepository accountJpaRepository;
+  private final ExternalAccountJpaRepository externalAccountJpaRepository;
 
   @Override
   public Account createAccount(Long userId, AccountType accountType) {
@@ -49,6 +51,11 @@ public class AccountPersistenceAdapter implements LoadAccountPort, RegisterAccou
         .map(TransactionEntity::getAmount)
         .reduce(BigDecimal.ZERO, BigDecimal::add);
     return accountMapper.toDomain(accountEntity, todayWithdrawal);
+  }
+
+  @Override
+  public ExternalAccount findExternalAccount(Long userId) {
+    return accountMapper.toDomain(externalAccountJpaRepository.findByUser(new UserEntity(userId)));
   }
 
   @Override

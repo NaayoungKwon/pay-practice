@@ -27,7 +27,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
-@Table(name = "account")
+@Table(name = "external_account")
 @Getter
 @Builder
 @AllArgsConstructor
@@ -35,7 +35,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @DynamicUpdate
 @EntityListeners(value = AuditingEntityListener.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AccountEntity {
+public class ExternalAccountEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,12 +45,8 @@ public class AccountEntity {
   @JoinColumn(name = "user_id")
   UserEntity user;
 
+  String bank;
   String accountNumber;
-  String type;
-  BigDecimal balance;
-
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "account", cascade = CascadeType.ALL)
-  List<TransactionEntity> transactions;
 
   @LastModifiedDate
   LocalDateTime updatedAt;

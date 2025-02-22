@@ -12,7 +12,19 @@ create table account
     id         bigint AUTO_INCREMENT PRIMARY KEY,
     user_id    bigint      not null,
     type      varchar(10) not null,
+    account_number    varchar(30) not null,
     balance    bigint      not null,
+    created_at timestamp(6),
+    updated_at timestamp(6),
+    index __index_user (user_id)
+);
+
+create table external_account
+(
+    id         bigint AUTO_INCREMENT PRIMARY KEY,
+    user_id    bigint      not null,
+    bank     varchar(20) not null,
+    account_number    varchar(30) not null,
     created_at timestamp(6),
     updated_at timestamp(6),
     index __index_user (user_id)

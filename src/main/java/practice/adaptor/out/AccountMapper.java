@@ -6,9 +6,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import practice.account.domain.Account;
+import practice.account.domain.ExternalAccount;
 import practice.account.domain.TransactionHistory;
 import practice.account.domain.TransactionHistoryList;
 import practice.adaptor.out.entity.AccountEntity;
+import practice.adaptor.out.entity.ExternalAccountEntity;
 import practice.adaptor.out.entity.TransactionEntity;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -21,6 +23,10 @@ public interface AccountMapper {
   @Mapping(source = "accountEntity.id", target = "accountId")
   @Mapping(source = "accountEntity.user.id", target = "userId")
   Account toDomain(AccountEntity accountEntity, BigDecimal todayWithdraw);
+
+  @Mapping(source = "user.id", target = "userId")
+  @Mapping(source = "bank", target = "bankName")
+  ExternalAccount toDomain(ExternalAccountEntity externalAccountEntity);
 
   @Mapping(source = "accountId", target = "id")
   @Mapping(source = "userId", target = "user.id")
