@@ -1,5 +1,6 @@
 package practice.adaptor.out.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -47,7 +48,7 @@ public class AccountEntity {
   String type;
   BigDecimal balance;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "account")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "account", cascade = CascadeType.ALL)
   List<TransactionEntity> transactions;
 
   @LastModifiedDate
