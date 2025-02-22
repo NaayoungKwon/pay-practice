@@ -40,6 +40,7 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	annotationProcessor("org.mapstruct:mapstruct-processor:1.5.3.Final")
 	testAnnotationProcessor("org.mapstruct:mapstruct-processor:1.5.3.Final")
