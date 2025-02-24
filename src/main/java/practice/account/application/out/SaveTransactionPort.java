@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import practice.account.domain.ExternalAccount;
 import practice.account.domain.TransactionHistory;
 
-public interface ExternalBankPort {
+public interface SaveTransactionPort {
 
-  TransactionHistory withdraw(ExternalAccount externalAccount, Long accountId, BigDecimal amount);
+  TransactionHistory saveExternalDeposit(ExternalAccount externalAccount, Long accountId, BigDecimal amount);
 }

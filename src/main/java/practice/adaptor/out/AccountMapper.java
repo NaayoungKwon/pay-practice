@@ -33,6 +33,9 @@ public interface AccountMapper {
   @Mapping(source = "transactionHistoryList", target = "transactions")
   AccountEntity toEntityAlone(Account account);
 
+  @Mapping(source = "transactionType", target = "type")
+  @Mapping(source="createdAt", target="transactionDateTime")
+  TransactionHistory toDomain(TransactionEntity transactionEntity);
 
   @Mapping(source = "type", target = "transactionType")
   @Mapping(source="transactionDateTime", target="createdAt")

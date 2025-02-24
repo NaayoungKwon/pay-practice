@@ -28,4 +28,8 @@ public record TransactionHistoryList(List<TransactionHistory> transactionHistory
         .counterPartyAccountId(accountInfo.getAccountId())
         .build());
   }
+
+  public void add(TransactionHistory transactionHistory) {
+    transactionHistoryList.add(transactionHistory);
+  }
 }

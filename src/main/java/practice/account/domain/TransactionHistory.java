@@ -13,6 +13,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TransactionHistory {
 
+  Long id;
   LocalDateTime transactionDateTime;
   TransactionType type;
   BigDecimal amount;
@@ -21,6 +22,10 @@ public class TransactionHistory {
 
   public LocalDate getTransactionDate() {
     return transactionDateTime.toLocalDate();
+  }
+
+  public void setToDeposit() {
+    this.type = TransactionType.DEPOSIT;
   }
 
 }

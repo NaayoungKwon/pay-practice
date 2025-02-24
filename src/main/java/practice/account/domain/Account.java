@@ -49,9 +49,10 @@ public class Account {
     transactionHistoryList.add(TransactionType.DEPOSIT, amount, new AccountInfo(sourceAccount));
   }
 
-  public void deposit(BigDecimal amount, ExternalAccount sourceAccount) {
-    balance = balance.add(amount);
-    transactionHistoryList.add(TransactionType.DEPOSIT, amount, new AccountInfo(sourceAccount));
+  public void deposit(TransactionHistory transactionHistory) {
+    balance = balance.add(transactionHistory.getAmount());
+    transactionHistory.setToDeposit();
+    transactionHistoryList.add(transactionHistory);
   }
 
 

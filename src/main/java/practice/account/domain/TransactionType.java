@@ -6,5 +6,6 @@ import lombok.Getter;
 public enum TransactionType {
   DEPOSIT,
   WITHDRAW,
+  DEPOSIT_PENDING
   ;
 }

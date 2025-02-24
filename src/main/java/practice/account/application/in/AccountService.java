@@ -11,6 +11,7 @@ import practice.account.application.out.RegisterAccountPort;
 import practice.account.domain.Account;
 import practice.account.domain.AccountType;
 import practice.account.domain.ExternalAccount;
+import practice.account.domain.TransactionHistory;
 
 @Service
 @RequiredArgsConstructor
@@ -37,8 +38,8 @@ public class AccountService implements CreateAccountUseCase, TransactionUseCase 
   public void depositToMainAccount(Long userId, BigDecimal amount) {
     Account account = loadAccountPort.findAccount(userId, AccountType.MAIN);
     ExternalAccount externalAccount = loadAccountPort.findExternalAccount(userId);
-    externalBankPort.getBalance(externalAccount, amount);
-    account.deposit(amount,  externalAccount);
+    TransactionHistory transactionHistory = externalBankPort.withdraw(externalAccount,account.getAccountId(), amount);
+    account.deposit(transactionHistory);
     updateAccountUseCase.updateAccount(account);
   }
 
@@ -50,8 +51,8 @@ public class AccountService implements CreateAccountUseCase, TransactionUseCase 
       return ;
     } else if (!mainAccount.canWithdrawNow(amount)) {
       ExternalAccount externalAccount = loadAccountPort.findExternalAccount(userId);
-      BigDecimal externalBankMoney = externalBankPort.getBalance(externalAccount, amount);
-      mainAccount.deposit(externalBankMoney, externalAccount);
+      TransactionHistory transactionHistory = externalBankPort.withdraw(externalAccount, mainAccount.getAccountId(), amount );
+      mainAccount.deposit(transactionHistory);
     }
 
     Account savingAccount = loadAccountPort.findAccount(userId, AccountType.SAVINGS);
