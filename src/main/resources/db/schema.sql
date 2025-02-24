@@ -36,6 +36,8 @@ create table transaction
     account_id    bigint      not null,
     transaction_type      varchar(10) not null,
     amount    bigint      not null,
+    counter_party_bank    varchar(20),
+    counter_party_account_id   varchar(30),
     created_at timestamp(6),
     created_date timestamp(6),
     index __index_account (account_id)

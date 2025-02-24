@@ -16,7 +16,8 @@ public class TransactionHistory {
   LocalDateTime transactionDateTime;
   TransactionType type;
   BigDecimal amount;
-  String opponentAccount;
+  String counterPartyBank;
+  String counterPartyAccountId;
 
   public LocalDate getTransactionDate() {
     return transactionDateTime.toLocalDate();

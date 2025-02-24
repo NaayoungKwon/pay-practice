@@ -40,7 +40,8 @@ public class TransactionEntity {
   AccountEntity account;
   String transactionType;
   BigDecimal amount;
-  String opponentAccount;
+  String counterPartyBank;
+  String counterPartyAccountId;
   LocalDate createdDate;
 
   @CreatedDate

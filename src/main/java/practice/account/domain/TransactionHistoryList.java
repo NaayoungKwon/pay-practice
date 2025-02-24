@@ -24,7 +24,8 @@ public record TransactionHistoryList(List<TransactionHistory> transactionHistory
         .transactionDateTime(LocalDateTime.now())
         .type(type)
         .amount(amount)
-        .opponentAccount(accountInfo.getAccountInfo())
+        .counterPartyBank(accountInfo.getBank())
+        .counterPartyAccountId(accountInfo.getAccountId())
         .build());
   }
 }

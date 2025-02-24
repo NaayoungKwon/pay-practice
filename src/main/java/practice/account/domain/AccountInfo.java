@@ -1,7 +1,6 @@
 package practice.account.domain;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
@@ -10,24 +9,16 @@ import lombok.experimental.FieldDefaults;
 public class AccountInfo {
 
   String bank;
-  Long accountId;
-  String externalAccountNumber;
+  String accountId;
 
   public AccountInfo(Account account) {
     this.bank = "WeBank";
-    this.accountId = account.getAccountId();
+    this.accountId = String.valueOf(account.getAccountId());
   }
 
   public AccountInfo(ExternalAccount account) {
     this.bank = account.getBankName();
-    this.externalAccountNumber = account.getAccountNumber();
-  }
-
-  public String getAccountInfo() {
-    if(accountId != null) {
-      return bank + "/" + accountId;
-    }
-    return bank + "/" + externalAccountNumber;
+    this.accountId = account.getAccountNumber();
   }
 
 }
