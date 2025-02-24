@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import practice.account.application.in.UpdateAccountPort;
+import practice.account.application.in.UpdateAccountUseCase;
 import practice.account.application.out.LoadAccountPort;
 import practice.account.application.out.RegisterAccountPort;
 import practice.account.domain.Account;
@@ -19,7 +19,7 @@ import practice.adaptor.out.entity.UserEntity;
 @Component
 @RequiredArgsConstructor
 public class AccountPersistenceAdapter implements LoadAccountPort, RegisterAccountPort,
-    UpdateAccountPort {
+    UpdateAccountUseCase {
 
   private final AccountMapper accountMapper;
   private final AccountJpaRepository accountJpaRepository;

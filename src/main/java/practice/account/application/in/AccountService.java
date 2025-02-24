@@ -18,7 +18,7 @@ public class AccountService implements CreateAccountUseCase, TransactionUseCase 
 
   private final RegisterAccountPort registerAccountPort;
   private final LoadAccountPort loadAccountPort;
-  private final UpdateAccountPort updateAccountPort;
+  private final UpdateAccountUseCase updateAccountUseCase;
   private final ExternalBankPort externalBankPort;
 
 
@@ -39,7 +39,7 @@ public class AccountService implements CreateAccountUseCase, TransactionUseCase 
     ExternalAccount externalAccount = loadAccountPort.findExternalAccount(userId);
     externalBankPort.getBalance(externalAccount, amount);
     account.deposit(amount,  externalAccount);
-    updateAccountPort.updateAccount(account);
+    updateAccountUseCase.updateAccount(account);
   }
 
   @Override
@@ -50,9 +50,6 @@ public class AccountService implements CreateAccountUseCase, TransactionUseCase 
       return ;
     } else if (!mainAccount.canWithdrawNow(amount)) {
       ExternalAccount externalAccount = loadAccountPort.findExternalAccount(userId);
-      if(externalAccount == null) {
-        return ;
-      }
       BigDecimal externalBankMoney = externalBankPort.getBalance(externalAccount, amount);
       mainAccount.deposit(externalBankMoney, externalAccount);
     }
@@ -60,6 +57,6 @@ public class AccountService implements CreateAccountUseCase, TransactionUseCase 
     Account savingAccount = loadAccountPort.findAccount(userId, AccountType.SAVINGS);
     mainAccount.withdraw(amount, savingAccount);
     savingAccount.deposit(amount, mainAccount );
-    updateAccountPort.updateAccount(List.of(mainAccount, savingAccount));
+    updateAccountUseCase.updateAccount(List.of(mainAccount, savingAccount));
   }
 }

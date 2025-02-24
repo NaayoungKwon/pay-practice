@@ -19,7 +19,7 @@ public class Account {
   AccountType type;
   BigDecimal balance;
 
-  private static final BigDecimal DAILY_WITHDRAWAL_LIMIT = BigDecimal.valueOf(3_000_000);
+  static final BigDecimal DAILY_WITHDRAWAL_LIMIT = BigDecimal.valueOf(3_000_000);
   BigDecimal todayWithdraw;
 
   @Builder.Default
