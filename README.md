@@ -29,7 +29,8 @@ Java 21, Spring boot 3.4, JPA, MySQL, Redis
 
 ## DB Schema
 
-![DB Schema](https://user-images.githubusercontent.com/48716298/139586073-3b3b3b3b-1b3b-4b3b-8b3b-3b3b3b3b3b3b.png)
+![image](https://github.com/user-attachments/assets/e57a9d17-99c9-40dc-8f6e-f6b4bf15bab3)
+
 
 
 ## API 명세
