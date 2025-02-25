@@ -6,5 +6,5 @@ public interface TransactionUseCase {
 
   void depositToMainAccount(Long userId, BigDecimal amount);
   void depositToSavingAccount(Long userId, BigDecimal amount);
-
+  void withdrawForPay(Long userId, BigDecimal amount, Long paymentId);
 }
