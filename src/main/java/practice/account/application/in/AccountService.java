@@ -34,6 +34,12 @@ public class AccountService implements CreateAccountUseCase, TransactionUseCase 
   }
 
   @Override
+  public ExternalAccount registerExternalAccount(Long userId, String bankCode,
+      String accountNumber) {
+    return registerAccountPort.registerExternalAccount(userId, bankCode, accountNumber);
+  }
+
+  @Override
   @Transactional
   public void depositToMainAccount(Long userId, BigDecimal amount) {
     Account account = loadAccountPort.findAccount(userId, AccountType.MAIN);

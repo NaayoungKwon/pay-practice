@@ -14,8 +14,10 @@ import practice.account.domain.AccountType;
 import practice.account.domain.ExternalAccount;
 import practice.account.domain.TransactionType;
 import practice.adaptor.out.entity.AccountEntity;
+import practice.adaptor.out.entity.ExternalAccountEntity;
 import practice.adaptor.out.entity.TransactionEntity;
 import practice.adaptor.out.entity.UserEntity;
+import practice.common.util.RandomGenerator;
 
 @Component
 @RequiredArgsConstructor
@@ -26,6 +28,7 @@ public class AccountPersistenceAdapter implements LoadAccountPort, RegisterAccou
   private final AccountJpaRepository accountJpaRepository;
   private final ExternalAccountJpaRepository externalAccountJpaRepository;
   private final TransactionJpaRepository transactionJpaRepository;
+  private final RandomGenerator randomGenerator;
 
   @Override
   public Account createAccount(Long userId, AccountType accountType) {
@@ -33,8 +36,20 @@ public class AccountPersistenceAdapter implements LoadAccountPort, RegisterAccou
         .type(accountType.name())
         .user(UserEntity.builder().id(userId).build())
         .balance(BigDecimal.ZERO)
+        .accountNumber(randomGenerator.getUuid())
         .build();
     return accountMapper.toDomain(accountJpaRepository.save(accountEntity));
+  }
+
+  @Override
+  public ExternalAccount registerExternalAccount(Long userId, String bankName,
+      String accountNumber) {
+    ExternalAccountEntity externalAccountEntity = ExternalAccountEntity.builder()
+        .bank(bankName)
+        .accountNumber(accountNumber)
+        .user(new UserEntity(userId))
+        .build();
+    return accountMapper.toDomain(externalAccountJpaRepository.save(externalAccountEntity));
   }
 
   @Override

@@ -16,5 +16,7 @@ public class UserRequest {
 
   String name;
   String email;
+  String externalBank;
+  String externalAccountNumber;
 
 }
