@@ -1,4 +1,4 @@
-package adaptor.out.api;
+package practice.adaptor.out.api;
 
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
@@ -14,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import practice.account.application.out.SaveTransactionPort;
 import practice.account.domain.ExternalAccount;
-import practice.adaptor.out.api.HanaBankApi;
 import practice.common.util.RandomGenerator;
 
 @ExtendWith(MockitoExtension.class)

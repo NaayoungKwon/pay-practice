@@ -63,7 +63,8 @@ public class AccountPersistenceAdapter implements LoadAccountPort, RegisterAccou
   public Account findMainAccountWithTodayWithdraw(Long userId) {
     AccountEntity accountEntity = accountJpaRepository.findByUserAndType(
         new UserEntity(userId), AccountType.MAIN.name());
-    BigDecimal todayWithdrawal = BigDecimal.valueOf(todayExternalWithdrawRepository.get(accountEntity.getId()));
+    BigDecimal todayWithdrawal = BigDecimal.valueOf(
+        todayExternalWithdrawRepository.get(accountEntity.getId()));
     return accountMapper.toDomain(accountEntity, todayWithdrawal);
   }
 
@@ -74,7 +75,10 @@ public class AccountPersistenceAdapter implements LoadAccountPort, RegisterAccou
 
   @Override
   public void updateAccount(Account account) {
-    accountJpaRepository.save(accountMapper.toEntity(account));
+    AccountEntity accountEntity = accountMapper.toEntity(account);
+    updateTransactionType(getUpdatedTransaction(accountEntity));
+    accountEntity.setTransactions(getNewTransaction(accountEntity));
+    accountJpaRepository.save(accountEntity);
   }
 
   @Override
@@ -91,8 +95,13 @@ public class AccountPersistenceAdapter implements LoadAccountPort, RegisterAccou
 
   private void updateTransactionType(List<TransactionEntity> updatedTransactionEntities) {
     for (TransactionEntity transactionEntity : updatedTransactionEntities) {
-      transactionJpaRepository.updateTransactionType(TransactionType.DEPOSIT.name(), transactionEntity.getId());
+      updateTransactionType(transactionEntity);
     }
+  }
+
+  private void updateTransactionType(TransactionEntity transactionEntity) {
+    transactionJpaRepository.updateTransactionType(TransactionType.DEPOSIT.name(),
+        transactionEntity.getId());
   }
 
   private List<TransactionEntity> getNewTransaction(AccountEntity accountEntity) {
