@@ -41,6 +41,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.redisson:redisson-spring-boot-starter:3.23.2'
 
 	annotationProcessor("org.mapstruct:mapstruct-processor:1.5.3.Final")
 	testAnnotationProcessor("org.mapstruct:mapstruct-processor:1.5.3.Final")

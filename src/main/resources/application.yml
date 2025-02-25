@@ -3,3 +3,4 @@ spring:
     include:
 #      - h2
       - mysql
+      - redis
