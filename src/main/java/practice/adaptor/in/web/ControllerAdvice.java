@@ -5,8 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import practice.adaptor.in.web.dto.CommonResponse;
-import practice.adaptor.in.web.dto.ResponseCode;
+import practice.common.dto.CommonResponse;
+import practice.common.dto.ResponseCode;
 import practice.common.exception.ExternalAccountErrorException;
 import practice.common.exception.ExternalAccountLimitExceededException;
 

@@ -1,4 +1,4 @@
-package practice.adaptor.in.web.dto;
+package practice.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;

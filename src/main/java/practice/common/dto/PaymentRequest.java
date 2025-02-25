@@ -1,4 +1,4 @@
-package practice.adaptor.in.web.dto;
+package practice.common.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

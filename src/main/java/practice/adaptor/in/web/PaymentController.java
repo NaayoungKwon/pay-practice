@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
-import practice.adaptor.in.web.dto.CommonResponse;
-import practice.adaptor.in.web.dto.PaymentRequest;
-import practice.adaptor.in.web.dto.PaymentResponse;
+import practice.common.dto.CommonResponse;
+import practice.common.dto.PaymentRequest;
+import practice.common.dto.PaymentResponse;
 import practice.common.idempotency.IdempotencyCheck;
 import practice.payment.application.in.PaymentFacade;
 

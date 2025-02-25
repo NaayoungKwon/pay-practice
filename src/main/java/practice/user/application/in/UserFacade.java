@@ -3,7 +3,7 @@ package practice.user.application.in;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import practice.adaptor.in.web.dto.UserRequest;
+import practice.common.dto.UserRequest;
 import practice.account.application.in.CreateAccountUseCase;
 import practice.user.domain.User;
 

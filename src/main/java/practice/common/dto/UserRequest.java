@@ -1,6 +1,5 @@
-package practice.adaptor.in.web.dto;
+package practice.common.dto;
 
-import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,8 +12,11 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TransactionRequest {
-  Long userId;
-  BigDecimal amount;
+public class UserRequest {
+
+  String name;
+  String email;
+  String externalBank;
+  String externalAccountNumber;
 
 }

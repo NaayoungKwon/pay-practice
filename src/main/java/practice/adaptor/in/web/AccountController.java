@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import practice.account.application.in.CreateAccountUseCase;
 import practice.account.application.in.TransactionUseCase;
-import practice.adaptor.in.web.dto.TransactionRequest;
+import practice.common.dto.TransactionRequest;
 
 
 @RestController

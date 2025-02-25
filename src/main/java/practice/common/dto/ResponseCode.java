@@ -1,4 +1,4 @@
-package practice.adaptor.in.web.dto;
+package practice.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

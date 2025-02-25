@@ -3,8 +3,8 @@ package practice.payment.application.in;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import practice.account.application.in.TransactionUseCase;
-import practice.adaptor.in.web.dto.PaymentRequest;
-import practice.adaptor.in.web.dto.PaymentResponse;
+import practice.common.dto.PaymentRequest;
+import practice.common.dto.PaymentResponse;
 import practice.payment.domain.Payment;
 
 @Service

@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import practice.adaptor.in.web.dto.UserRequest;
+import practice.common.dto.UserRequest;
 import practice.user.application.in.UserFacade;
 
 
