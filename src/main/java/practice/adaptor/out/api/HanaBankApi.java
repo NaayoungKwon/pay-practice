@@ -11,6 +11,7 @@ import practice.account.application.out.ExternalBankPort;
 import practice.account.application.out.SaveTransactionPort;
 import practice.account.domain.ExternalAccount;
 import practice.account.domain.TransactionHistory;
+import practice.common.exception.ExternalAccountErrorException;
 import practice.common.util.RandomGenerator;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
@@ -35,7 +36,7 @@ public class HanaBankApi implements ExternalBankPort {
       requestWithRetry(amount).block();
     } catch (Exception e){
       saveTransactionPort.rollbackExternalWithdraw(accountId, amount);
-      throw e;
+      throw new ExternalAccountErrorException(e.getMessage());
     }
 
     return transactionHistory;

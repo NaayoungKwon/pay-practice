@@ -11,6 +11,7 @@ import practice.account.domain.Account;
 import practice.account.domain.AccountType;
 import practice.account.domain.ExternalAccount;
 import practice.account.domain.TransactionHistory;
+import practice.common.exception.ExternalAccountLimitExceededException;
 import practice.common.lock.DistributedLock;
 
 @Service
@@ -54,7 +55,7 @@ public class AccountService implements CreateAccountUseCase, TransactionUseCase 
   public void depositToSavingAccount(Long userId, BigDecimal amount) {
     Account mainAccount = loadAccountPort.findMainAccountWithTodayWithdraw(userId);
     if(!mainAccount.canWithdrawNow(amount) && !mainAccount.canWithdrawToExternalAccount()) {
-      return ;
+      throw new ExternalAccountLimitExceededException();
     } else if (!mainAccount.canWithdrawNow(amount)) {
       ExternalAccount externalAccount = loadAccountPort.findExternalAccount(userId);
       TransactionHistory transactionHistory = externalBankPort.withdraw(externalAccount, mainAccount.getAccountId(), mainAccount.calculateRequiredAmount(amount) );
