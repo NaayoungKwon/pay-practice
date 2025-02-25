@@ -29,9 +29,7 @@ public class IdempotencyAoP {
     String key = getKey(joinPoint);
 
     if (checkAndSet(key)) {
-      Object result = joinPoint.proceed();
-      removeKey(key);
-      return result;
+      return joinPoint.proceed();
     }
 
     return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -48,10 +46,6 @@ public class IdempotencyAoP {
     Boolean success = redisTemplate.opsForValue()
         .setIfAbsent(idempotencyKey, "EXISTS", EXPIRE_TIME, TimeUnit.SECONDS);
     return Boolean.TRUE.equals(success);
-  }
-
-  public void removeKey(String idempotencyKey) {
-    redisTemplate.delete(idempotencyKey);
   }
 
   private String getKey(IdempotencyCheck idempotencyCheck, String[] parameterNames, Object[] args) {
