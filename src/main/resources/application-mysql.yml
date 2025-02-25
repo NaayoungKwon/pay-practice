@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: secret
+    username: secret
+    password: secret
+    hikari:
+      maximum-pool-size: 10
+
+  sql:
+    init:
+#      schema-locations: classpath:/db/schema.sql
+      data-locations: classpath:/db/data.sql
+      mode: always
+
+  jpa:
+    show-sql: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    defer-datasource-initialization: true

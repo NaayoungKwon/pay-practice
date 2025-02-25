@@ -1,0 +1,5 @@
+spring:
+  data:
+    redis:
+      host: secret
+      port: 6379
