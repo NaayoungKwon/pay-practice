@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import practice.account.application.out.ExternalBankPort;
 import practice.account.application.out.LoadAccountPort;
 import practice.account.application.out.RegisterAccountPort;
@@ -12,6 +11,7 @@ import practice.account.domain.Account;
 import practice.account.domain.AccountType;
 import practice.account.domain.ExternalAccount;
 import practice.account.domain.TransactionHistory;
+import practice.common.lock.DistributedLock;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +40,7 @@ public class AccountService implements CreateAccountUseCase, TransactionUseCase 
   }
 
   @Override
-  @Transactional
+  @DistributedLock(key="ACCOUNT", value = "#userId")
   public void depositToMainAccount(Long userId, BigDecimal amount) {
     Account account = loadAccountPort.findAccount(userId, AccountType.MAIN);
     ExternalAccount externalAccount = loadAccountPort.findExternalAccount(userId);
@@ -50,7 +50,7 @@ public class AccountService implements CreateAccountUseCase, TransactionUseCase 
   }
 
   @Override
-  @Transactional
+  @DistributedLock(key="ACCOUNT", value = "#userId")
   public void depositToSavingAccount(Long userId, BigDecimal amount) {
     Account mainAccount = loadAccountPort.findMainAccountWithTodayWithdraw(userId);
     if(!mainAccount.canWithdrawNow(amount) && !mainAccount.canWithdrawToExternalAccount()) {

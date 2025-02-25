@@ -34,7 +34,7 @@ create table transaction
 (
     id         bigint AUTO_INCREMENT PRIMARY KEY,
     account_id    bigint      not null,
-    transaction_type      varchar(10) not null,
+    transaction_type      varchar(20) not null,
     amount    bigint      not null,
     counter_party_bank    varchar(20),
     counter_party_account_id   varchar(30),
