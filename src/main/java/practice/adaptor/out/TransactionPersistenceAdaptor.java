@@ -18,6 +18,7 @@ import practice.adaptor.out.entity.TransactionEntity;
 public class TransactionPersistenceAdaptor implements SaveTransactionPort {
 
   private final TransactionJpaRepository transactionJpaRepository;
+  private final TodayExternalWithdrawRepository todayExternalWithdrawRepository;
   private final AccountMapper accountMapper;
 
   @Override
@@ -25,7 +26,13 @@ public class TransactionPersistenceAdaptor implements SaveTransactionPort {
   public TransactionHistory saveExternalDeposit(ExternalAccount externalAccount, Long accountId, BigDecimal amount) {
     TransactionEntity transaction = transactionJpaRepository.save(
         getTransactionEntity(externalAccount,accountId,  amount));
+    todayExternalWithdrawRepository.increment(accountId, amount);
     return accountMapper.toDomain(transaction);
+  }
+
+  @Override
+  public void rollbackExternalWithdraw(Long accountId, BigDecimal amount) {
+    todayExternalWithdrawRepository.decrement(accountId, amount);
   }
 
   private TransactionEntity getTransactionEntity(ExternalAccount externalAccount, Long accountId, BigDecimal amount) {

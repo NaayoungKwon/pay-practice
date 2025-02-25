@@ -7,4 +7,5 @@ import practice.account.domain.TransactionHistory;
 public interface SaveTransactionPort {
 
   TransactionHistory saveExternalDeposit(ExternalAccount externalAccount, Long accountId, BigDecimal amount);
+  void rollbackExternalWithdraw(Long accountId, BigDecimal amount);
 }

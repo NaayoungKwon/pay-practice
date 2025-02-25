@@ -30,8 +30,13 @@ public class HanaBankApi implements ExternalBankPort {
     TransactionHistory transactionHistory = saveTransactionPort.saveExternalDeposit(externalAccount,
         accountId, amount);
 
-    log.info("[External] Deposit from {} : {}원", externalAccount.getBankName(), amount);
-    requestWithRetry(amount).block();
+    try {
+      log.info("[External] Deposit from {} : {}원", externalAccount.getBankName(), amount);
+      requestWithRetry(amount).block();
+    } catch (Exception e){
+      saveTransactionPort.rollbackExternalWithdraw(accountId, amount);
+      throw e;
+    }
 
     return transactionHistory;
   }

@@ -28,6 +28,7 @@ public class AccountPersistenceAdapter implements LoadAccountPort, RegisterAccou
   private final AccountJpaRepository accountJpaRepository;
   private final ExternalAccountJpaRepository externalAccountJpaRepository;
   private final TransactionJpaRepository transactionJpaRepository;
+  private final TodayExternalWithdrawRepository todayExternalWithdrawRepository;
   private final RandomGenerator randomGenerator;
 
   @Override
@@ -60,14 +61,9 @@ public class AccountPersistenceAdapter implements LoadAccountPort, RegisterAccou
 
   @Override
   public Account findMainAccountWithTodayWithdraw(Long userId) {
-    LocalDate today = LocalDate.now();
-    AccountEntity accountEntity = accountJpaRepository.findByUserAndTypeFetch(
-        userId, AccountType.MAIN.name());
-    BigDecimal todayWithdrawal = accountEntity.getTransactions().stream()
-        .filter(t -> t.getCreatedDate().isEqual(today))
-        .filter(t -> t.getTransactionType().equals(TransactionType.WITHDRAW.name()))
-        .map(TransactionEntity::getAmount)
-        .reduce(BigDecimal.ZERO, BigDecimal::add);
+    AccountEntity accountEntity = accountJpaRepository.findByUserAndType(
+        new UserEntity(userId), AccountType.MAIN.name());
+    BigDecimal todayWithdrawal = BigDecimal.valueOf(todayExternalWithdrawRepository.get(accountEntity.getId()));
     return accountMapper.toDomain(accountEntity, todayWithdrawal);
   }
 
