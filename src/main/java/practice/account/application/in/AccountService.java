@@ -51,7 +51,7 @@ public class AccountService implements CreateAccountUseCase, TransactionUseCase 
       return ;
     } else if (!mainAccount.canWithdrawNow(amount)) {
       ExternalAccount externalAccount = loadAccountPort.findExternalAccount(userId);
-      TransactionHistory transactionHistory = externalBankPort.withdraw(externalAccount, mainAccount.getAccountId(), amount );
+      TransactionHistory transactionHistory = externalBankPort.withdraw(externalAccount, mainAccount.getAccountId(), mainAccount.calculateRequiredAmount(amount) );
       mainAccount.deposit(transactionHistory);
     }
 

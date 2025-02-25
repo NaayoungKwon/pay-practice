@@ -35,6 +35,10 @@ public class Account {
         && todayWithdraw.compareTo(DAILY_WITHDRAWAL_LIMIT) < 0;
   }
 
+  public BigDecimal calculateRequiredAmount(BigDecimal amount){
+    return amount.subtract(balance);
+  }
+
   public void withdraw(BigDecimal amount, Account targetAccount) {
     if(!canWithdrawNow(amount)) {
       return;
