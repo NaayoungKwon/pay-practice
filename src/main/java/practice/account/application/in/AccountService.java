@@ -67,4 +67,20 @@ public class AccountService implements CreateAccountUseCase, TransactionUseCase 
     savingAccount.deposit(amount, mainAccount );
     updateAccountUseCase.updateAccount(List.of(mainAccount, savingAccount));
   }
+
+  @Override
+  @DistributedLock(key="ACCOUNT", value = "#userId")
+  public void withdrawForPay(Long userId, BigDecimal amount, Long paymentId) {
+    Account account = loadAccountPort.findMainAccountWithTodayWithdraw(userId);
+    if (!account.canWithdrawNow(amount) && !account.canWithdrawToExternalAccount()) {
+      throw new ExternalAccountLimitExceededException();
+    } else if (!account.canWithdrawNow(amount)) {
+      ExternalAccount externalAccount = loadAccountPort.findExternalAccount(userId);
+      TransactionHistory transactionHistory = externalBankPort.withdraw(externalAccount,
+          account.getAccountId(), account.calculateRequiredAmount(amount));
+      account.deposit(transactionHistory);
+    }
+    account.withdraw(amount, paymentId);
+    updateAccountUseCase.updateAccount(account);
+  }
 }

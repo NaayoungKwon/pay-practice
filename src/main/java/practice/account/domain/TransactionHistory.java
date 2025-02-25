@@ -19,6 +19,7 @@ public class TransactionHistory {
   BigDecimal amount;
   String counterPartyBank;
   String counterPartyAccountId;
+  Long paymentId;
 
   public LocalDate getTransactionDate() {
     return transactionDateTime.toLocalDate();

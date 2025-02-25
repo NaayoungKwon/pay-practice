@@ -48,6 +48,15 @@ public class Account {
     transactionHistoryList.add(TransactionType.WITHDRAW, amount, new AccountInfo(targetAccount));
   }
 
+  public void withdraw(BigDecimal amount, Long paymentId) {
+    if(!canWithdrawNow(amount)) {
+      return;
+    }
+
+    balance = balance.subtract(amount);
+    transactionHistoryList.add(TransactionType.PAYMENT, amount, paymentId);
+  }
+
   public void deposit(BigDecimal amount, Account sourceAccount) {
     balance = balance.add(amount);
     transactionHistoryList.add(TransactionType.DEPOSIT, amount, new AccountInfo(sourceAccount));

@@ -1,5 +1,7 @@
 package practice.account.domain;
 
+import static practice.account.domain.TransactionType.PAYMENT;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,6 +28,16 @@ public record TransactionHistoryList(List<TransactionHistory> transactionHistory
         .amount(amount)
         .counterPartyBank(accountInfo.getBank())
         .counterPartyAccountId(accountInfo.getAccountId())
+        .build());
+  }
+
+  public void add(TransactionType type, BigDecimal amount, Long id) {
+    transactionHistoryList.add(TransactionHistory.builder()
+        .transactionDateTime(LocalDateTime.now())
+        .type(type)
+        .amount(amount)
+        .counterPartyAccountId(PAYMENT.equals(type) ? null : String.valueOf(id))
+        .paymentId(PAYMENT.equals(type) ? id : null)
         .build());
   }
 
