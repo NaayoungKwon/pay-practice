@@ -42,3 +42,17 @@ create table transaction
     created_date timestamp(6),
     index __index_account (account_id)
 );
+
+create table payment
+(
+    id         bigint AUTO_INCREMENT PRIMARY KEY,
+    user_id    bigint      not null,
+    partner_id    bigint      not null,
+    partner_pay_key    varchar(40) not null,
+    product_items   varchar(1000) not null,
+    total_pay_amount    bigint      not null,
+    status    varchar(20) not null,
+    created_at timestamp(6),
+    updated_at timestamp(6),
+    index __index_partner_pay_key (partner_pay_key)
+);

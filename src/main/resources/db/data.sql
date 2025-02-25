@@ -1,5 +1,6 @@
 DELETE FROM transaction;
 DELETE FROM account;
+DELETE FROM payment;
 -- DELETE FROM users;
 -- DELETE FROM external_account;
 
