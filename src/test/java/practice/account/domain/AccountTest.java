@@ -23,10 +23,10 @@ class AccountTest {
         .balance(BigDecimal.valueOf(1000)).build();
 
     // when
-    boolean result = account.canWithdrawNow(BigDecimal.valueOf(withdrawAmount));
+    boolean result = account.canNotWithdrawNow(BigDecimal.valueOf(withdrawAmount));
 
     // then
-    assertTrue(result);
+    assertFalse(result);
   }
 
   @ParameterizedTest
@@ -39,10 +39,10 @@ class AccountTest {
         .balance(BigDecimal.valueOf(1000)).build();
 
     // when
-    boolean result = account.canWithdrawNow(BigDecimal.valueOf(withdrawAmount));
+    boolean result = account.canNotWithdrawNow(BigDecimal.valueOf(withdrawAmount));
 
     // then
-    assertFalse(result);
+    assertTrue(result);
   }
 
 
@@ -55,10 +55,10 @@ class AccountTest {
         .balance(BigDecimal.valueOf(1000)).build();
 
     // when
-    boolean result = account.canWithdrawNow(BigDecimal.valueOf(500));
+    boolean result = account.canNotWithdrawNow(BigDecimal.valueOf(500));
 
     // then
-    assertFalse(result);
+    assertTrue(result);
   }
 
   @ParameterizedTest
@@ -71,10 +71,10 @@ class AccountTest {
         .todayWithdraw(BigDecimal.valueOf(todayWithdraw)).build();
 
     // when
-    boolean result = account.canWithdrawToExternalAccount();
+    boolean result = account.isExternalWithdrawLimitExceeded();
 
     // then
-    assertTrue(result);
+    assertFalse(result);
   }
 
   @Test

@@ -25,14 +25,14 @@ public class Account {
   @Builder.Default
   TransactionHistoryList transactionHistoryList = new TransactionHistoryList(new ArrayList<>());
 
-  public boolean canWithdrawNow(BigDecimal amount) {
-    return AccountType.MAIN.equals(type)
-        && balance.compareTo(amount) >= 0;
+  public boolean canNotWithdrawNow(BigDecimal amount) {
+    return !(AccountType.MAIN.equals(type)
+        && balance.compareTo(amount) >= 0);
   }
 
-  public boolean canWithdrawToExternalAccount() {
-    return AccountType.MAIN.equals(type)
-        && todayWithdraw.compareTo(DAILY_WITHDRAWAL_LIMIT) < 0;
+  public boolean isExternalWithdrawLimitExceeded() {
+    return !(AccountType.MAIN.equals(type)
+        && todayWithdraw.compareTo(DAILY_WITHDRAWAL_LIMIT) < 0);
   }
 
   public BigDecimal calculateRequiredAmount(BigDecimal amount){
@@ -40,7 +40,7 @@ public class Account {
   }
 
   public void withdraw(BigDecimal amount, Account targetAccount) {
-    if(!canWithdrawNow(amount)) {
+    if(canNotWithdrawNow(amount)) {
       return;
     }
 
@@ -49,7 +49,7 @@ public class Account {
   }
 
   public void withdraw(BigDecimal amount, Long paymentId) {
-    if(!canWithdrawNow(amount)) {
+    if(canNotWithdrawNow(amount)) {
       return;
     }
 

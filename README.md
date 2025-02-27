@@ -31,7 +31,11 @@ Java 21, Spring boot 3.4, JPA, MySQL, Redis
 
 ![image](https://github.com/user-attachments/assets/e57a9d17-99c9-40dc-8f6e-f6b4bf15bab3)
 
-
+- user : 사용자 정보
+- account : 계좌 정보
+- external_account : 외부 연결 계좌 정보
+- transaction : 거래 내역 (입금, 출금, 외부 결제)
+- payment : 외부 결제 정보
 
 ## API 명세
 

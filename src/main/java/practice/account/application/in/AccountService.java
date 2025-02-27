@@ -44,9 +44,7 @@ public class AccountService implements CreateAccountUseCase, TransactionUseCase 
   @DistributedLock(key="ACCOUNT", value = "#userId")
   public void depositToMainAccount(Long userId, BigDecimal amount) {
     Account account = loadAccountPort.findAccount(userId, AccountType.MAIN);
-    ExternalAccount externalAccount = loadAccountPort.findExternalAccount(userId);
-    TransactionHistory transactionHistory = externalBankPort.withdraw(externalAccount,account.getAccountId(), amount);
-    account.deposit(transactionHistory);
+    withdrawFromExternalAccount(account, amount);
     updateAccountUseCase.updateAccount(account);
   }
 
@@ -54,12 +52,10 @@ public class AccountService implements CreateAccountUseCase, TransactionUseCase 
   @DistributedLock(key="ACCOUNT", value = "#userId")
   public void depositToSavingAccount(Long userId, BigDecimal amount) {
     Account mainAccount = loadAccountPort.findMainAccountWithTodayWithdraw(userId);
-    if(!mainAccount.canWithdrawNow(amount) && !mainAccount.canWithdrawToExternalAccount()) {
+    if(mainAccount.canNotWithdrawNow(amount) && mainAccount.isExternalWithdrawLimitExceeded()) {
       throw new ExternalAccountLimitExceededException();
-    } else if (!mainAccount.canWithdrawNow(amount)) {
-      ExternalAccount externalAccount = loadAccountPort.findExternalAccount(userId);
-      TransactionHistory transactionHistory = externalBankPort.withdraw(externalAccount, mainAccount.getAccountId(), mainAccount.calculateRequiredAmount(amount) );
-      mainAccount.deposit(transactionHistory);
+    } else if (mainAccount.canNotWithdrawNow(amount)) {
+      withdrawFromExternalAccount(mainAccount, mainAccount.calculateRequiredAmount(amount));
     }
 
     Account savingAccount = loadAccountPort.findAccount(userId, AccountType.SAVINGS);
@@ -72,15 +68,18 @@ public class AccountService implements CreateAccountUseCase, TransactionUseCase 
   @DistributedLock(key="ACCOUNT", value = "#userId")
   public void withdrawForPay(Long userId, BigDecimal amount, Long paymentId) {
     Account account = loadAccountPort.findMainAccountWithTodayWithdraw(userId);
-    if (!account.canWithdrawNow(amount) && !account.canWithdrawToExternalAccount()) {
+    if (account.canNotWithdrawNow(amount) && account.isExternalWithdrawLimitExceeded()) {
       throw new ExternalAccountLimitExceededException();
-    } else if (!account.canWithdrawNow(amount)) {
-      ExternalAccount externalAccount = loadAccountPort.findExternalAccount(userId);
-      TransactionHistory transactionHistory = externalBankPort.withdraw(externalAccount,
-          account.getAccountId(), account.calculateRequiredAmount(amount));
-      account.deposit(transactionHistory);
+    } else if (account.canNotWithdrawNow(amount)) {
+      withdrawFromExternalAccount(account, account.calculateRequiredAmount(amount));
     }
     account.withdraw(amount, paymentId);
     updateAccountUseCase.updateAccount(account);
+  }
+
+  private void withdrawFromExternalAccount(Account account, BigDecimal amount) {
+    ExternalAccount externalAccount = loadAccountPort.findExternalAccount(account.getUserId());
+    TransactionHistory transactionHistory = externalBankPort.withdraw(externalAccount, account.getAccountId(), amount );
+    account.deposit(transactionHistory);
   }
 }
