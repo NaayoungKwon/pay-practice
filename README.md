@@ -116,6 +116,9 @@ request body
 }
 
 ```
+
+#### Response
+
 response body
 ```json
 {
@@ -129,3 +132,31 @@ response body
   }
 }
 ```
+### 에러 응답
+
+- HTTP Status: 409 Conflict 
+  - 멱등성 보장 API의 Idempotency key 중복 발생
+
+
+- HTTP Status: 429 Too Many Requests
+   ```json
+   {
+     "code": "NotEnoughAccountBalance",
+     "message": "충전 계좌 잔고 부족"
+   }
+   ```
+
+- HTTP Status: 500 Internal Server Error
+   ```json
+   {
+     "code": "BankMaintenance",
+     "message": "충전 계좌 점검"
+   }
+   ```
+   
+   ```json
+   {
+      "code": "Fail",
+      "message": "서비스 중 에러가 발생했습니다."
+   }
+   ```
