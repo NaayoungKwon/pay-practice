@@ -8,11 +8,18 @@
 [개발 중 고민한 것 기록](https://coffee-sidewalk-a8c.notion.site/1a459a6ae03280baaa50c7b75840e91f?pvs=74)
 
 ### 개발 환경
-Java 21, Spring boot 3.4, JPA, MySQL, Redis
 
+Kotlin, Spring boot 3.4, JPA, MySQL, Redis
+
+> Note: <br>
+> MySQL, Redis는 Local 환경에서 Docker를 띄웠기 때문에 실행 시에
+<br>application-mysql.yml, application-redis.yml 파일의 secret으로 표기된 부분을 설정 후
+> 실행해야합니다.
 
 ## Feature
+
 1. 계좌 생성 및 충전
+
 - [x]  신규 사용자는 가입을 진행하면서 하나의 메인 계좌를 생성하고, 메인 계좌 충전에 필요한 타행 계좌를 등록한다.
 - [x]  사용자는 적금 계좌를 생성할 수 있다.
 - [x]  메인 계좌는 이체 시 잔액이 부족하면 가입 시 등록한 타행 계좌에서 돈을 가져온다.
@@ -21,6 +28,7 @@ Java 21, Spring boot 3.4, JPA, MySQL, Redis
     - 이 때도 메인 계좌에 돈이 부족하면 타행 계좌에서 인출한다.
 
 2. 외부 결제로 인한 출금
+
 - [x]  외부 결제 시 사용자의 메인 계좌의 출금이 이루어 지며, 결제 내역을 남겨야한다.
 - [x]  출금 시, 내 메인 계좌에 잔액이 부족하면 나의 타행 계좌에서 돈을 가져온다.
     - 이 때도 타행 계좌 일일 인출 한도는 동일하게 적용
@@ -46,27 +54,32 @@ Java 21, Spring boot 3.4, JPA, MySQL, Redis
 - 타행 계좌 등록
 
 #### Request
+
 ```http
 POST /users
 ```
+
 request body
+
 ```json
 {
   "name": "홍길동",
   "email": "hello@gmail",
-  "externalBank" : "HANA BANK",
-  "externalAccountNumber" : "1234567890"
+  "externalBank": "HANA BANK",
+  "externalAccountNumber": "1234567890"
 }
 ```
 
 ### 2. 적금 계좌 생성
 
 #### Request
+
 ```http
 POST /accounts/savings
 ```
 
 request body
+
 ```json
 {
   "userId": 1
@@ -76,11 +89,13 @@ request body
 ### 3. 적금 계좌로 입금
 
 #### Request
+
 ```http
 PATCH /accounts/savings/deposit
 ```
 
 request body
+
 ```json
 {
   "userId": 1,
@@ -91,12 +106,14 @@ request body
 ### 4. 외부 결제 승인
 
 #### Request
+
 ```http
 POST /payments
 Idempotency-Key: test-idempotency-key
 ```
 
 request body
+
 ```json
 {
   "userId": 1,
@@ -120,6 +137,7 @@ request body
 #### Response
 
 response body
+
 ```json
 {
   "code": "Success",
@@ -132,10 +150,11 @@ response body
   }
 }
 ```
+
 ### 에러 응답
 
-- HTTP Status: 409 Conflict 
-  - 멱등성 보장 API의 Idempotency key 중복 발생
+- HTTP Status: 409 Conflict
+    - 멱등성 보장 API의 Idempotency key 중복 발생
 
 
 - HTTP Status: 429 Too Many Requests
@@ -153,7 +172,7 @@ response body
      "message": "충전 계좌 점검"
    }
    ```
-   
+
    ```json
    {
       "code": "Fail",
